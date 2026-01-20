@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Talk2Sign - Sign Language Learning Platform</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        /* Custom styles for Talk2Sign landing page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .landing-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .btn-custom {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 10px;
+            margin: 0.5rem;
+            min-width: 200px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Hide Start button - multiple selectors to override Bootstrap */
+        .btn-start,
+        a.btn-start,
+        .btn.btn-start,
+        a.btn.btn-start,
+        .btn-custom.btn-start,
+        a.btn-custom.btn-start,
+        .button-container .btn-start,
+        .button-container a.btn-start {
+            display: none !important; /* Hide the Start button */
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
+            pointer-events: none !important;
+            clip: rect(0, 0, 0, 0) !important;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-training {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-training:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+            color: white;
+        }
+        
+        .btn-deploy {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-deploy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+            color: white;
+        }
+        
+        .icon-container {
+            margin-bottom: 2rem;
+        }
+        
+        .icon-container img {
+            max-width: 200px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        /* YCI Logo in top right corner */
+        .yci-logo-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .yci-logo-container img {
+            max-width: 280px;
+            max-height: 140px;
+            width: auto;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+        
+        /* Smartphone mode toggle button */
+        .smartphone-mode-btn {
+            position: fixed !important;
+            top: 20px !important;
+            left: 20px !important;
+            z-index: 10001 !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 2px solid #667eea !important;
+            border-radius: 50% !important;
+            width: 50px !important;
+            height: 50px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
+        .smartphone-mode-btn:hover {
+            background: #667eea !important;
+            transform: scale(1.1) !important;
+        }
+        
+        .smartphone-mode-btn:hover i {
+            color: white !important;
+        }
+        
+        .smartphone-mode-btn i {
+            font-size: 1.5rem !important;
+            color: #667eea !important;
+            transition: color 0.3s ease !important;
+            display: block !important;
+            visibility: visible !important;
+        }
+        
+        .smartphone-mode-btn.active {
+            background: #667eea !important;
+        }
+        
+        .smartphone-mode-btn.active i {
+            color: white !important;
+        }
+        
+        /* Smartphone mode styles - Responsive layout */
+        body.smartphone-mode {
+            overflow-x: hidden;
+        }
+        
+        body.smartphone-mode .landing-container {
+            max-width: 100%;
+            width: 95%;
+            padding: 1.5rem;
+            margin: 0 auto;
+        }
+        
+        body.smartphone-mode .title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        body.smartphone-mode .subtitle {
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        body.smartphone-mode .btn-custom {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            min-width: 100%;
+            margin: 0.5rem 0;
+            width: 100%;
+            display: block;
+        }
+        
+        /* Hide Start button in smartphone mode - must be after btn-custom rule */
+        body.smartphone-mode .btn-start,
+        body.smartphone-mode a.btn-start,
+        body.smartphone-mode .btn.btn-start,
+        body.smartphone-mode a.btn.btn-start,
+        body.smartphone-mode .btn-custom.btn-start,
+        body.smartphone-mode a.btn-custom.btn-start,
+        body.smartphone-mode .button-container .btn-start,
+        body.smartphone-mode .button-container a.btn-start,
+        body.smartphone-mode .landing-container .btn-start,
+        body.smartphone-mode .landing-container a.btn-start,
+        body.smartphone-mode .button-container a[href="docs/index.html"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            left: -9999px !important;
+            clip: rect(0, 0, 0, 0) !important;
+        }
+        
+        body.smartphone-mode .icon-container {
+            margin-bottom: 1rem;
+        }
+        
+        body.smartphone-mode .icon-container img {
+            max-width: 120px;
+            max-height: 120px;
+        }
+        
+        body.smartphone-mode .yci-logo-container {
+            top: 10px;
+            right: 10px;
+        }
+        
+        body.smartphone-mode .yci-logo-container img {
+            max-width: 150px;
+            max-height: 75px;
+        }
+        
+        body.smartphone-mode .smartphone-mode-btn {
+            top: 10px !important;
+            left: 10px !important;
+            width: 45px !important;
+            height: 45px !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: flex !important;
+        }
+        
+        body.smartphone-mode .smartphone-mode-btn i {
+            font-size: 1.2rem !important;
+            visibility: visible !important;
+        }
+        
+        body.smartphone-mode .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        body.smartphone-mode .button-container br {
+            display: none;
+        }
+        
+        /* Responsive design for small screens */
+        @media (max-width: 768px) {
+            .yci-logo-container {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .yci-logo-container img {
+                max-width: 200px;
+                max-height: 100px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .landing-container {
+                padding: 2rem;
+            }
+            
+            .btn-custom {
+                min-width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            .smartphone-mode-btn {
+                top: 10px !important;
+                left: 10px !important;
+                width: 45px !important;
+                height: 45px !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                display: flex !important;
+            }
+        }
+        
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .landing-container {
+                padding: 1.5rem;
+                width: 95%;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .btn-custom {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.95rem;
+            }
+            
+            .icon-container img {
+                max-width: 120px;
+                max-height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Smartphone mode toggle button -->
+    <button class="smartphone-mode-btn" id="smartphoneModeBtn" title="Toggle Smartphone Mode">
+        <i class="bi bi-phone"></i>
+    </button>
+    
+    <!-- YCI Logo in top right corner -->
+    <div class="yci-logo-container">
+        <img src="./yci_logo.jpg" alt="YCI Logo" />
+    </div>
+    
+    <div class="landing-container">
+        <div class="icon-container">
+            <img src="./talk2sign_logo.png" alt="Talk2Sign Logo" />
+        </div>
+        <h1 class="title">Talk2Sign</h1>
+        
+        <div class="button-container">
+            <a href="docs/index.html" class="btn btn-custom btn-start">
+                <i class="bi bi-play-circle me-2"></i>Start
+            </a>
+            <br>
+            <a href="training.html" class="btn btn-custom btn-training">
+                <i class="bi bi-book me-2"></i>Training
+            </a>
+            <br>
+            <a href="deploy.html" class="btn btn-custom btn-deploy">
+                <i class="bi bi-rocket-takeoff me-2"></i>Deploy
+            </a>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Hide Start Button Script - Remove from DOM -->
+    <script>
+        // Aggressively remove Start button - runs immediately and continuously
+        (function() {
+            function removeStartButton() {
+                // Find Start button by multiple methods
+                const selectors = [
+                    'a.btn-start',
+                    'a.btn-custom.btn-start',
+                    'a[href="docs/index.html"]',
+                    'a[href="./docs/index.html"]',
+                    '.button-container a:first-child',
+                    '.button-container a[href*="docs/index.html"]'
+                ];
+                
+                selectors.forEach(function(selector) {
+                    try {
+                        const elements = document.querySelectorAll(selector);
+                        elements.forEach(function(el) {
+                            // Check if this is the Start button by href or class
+                            if (el && (
+                                el.href && (el.href.includes('docs/index.html') || el.href.includes('/docs/')) ||
+                                el.classList.contains('btn-start') ||
+                                el.textContent.trim().toLowerCase().includes('start')
+                            )) {
+                                // Remove from DOM completely
+                                if (el.parentNode) {
+                                    el.parentNode.removeChild(el);
+                                }
+                                // Also hide with inline styles as backup
+                                el.style.setProperty('display', 'none', 'important');
+                                el.style.setProperty('visibility', 'hidden', 'important');
+                                el.style.setProperty('opacity', '0', 'important');
+                                el.style.setProperty('height', '0', 'important');
+                                el.style.setProperty('width', '0', 'important');
+                                el.style.setProperty('position', 'absolute', 'important');
+                                el.style.setProperty('left', '-9999px', 'important');
+                            }
+                        });
+                    } catch(e) {
+                        // Ignore errors
+                    }
+                });
+            }
+            
+            // Run immediately
+            removeStartButton();
+            
+            // Run on DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    removeStartButton();
+                    setTimeout(removeStartButton, 50);
+                    setTimeout(removeStartButton, 100);
+                    setTimeout(removeStartButton, 200);
+                });
+            } else {
+                removeStartButton();
+                setTimeout(removeStartButton, 50);
+                setTimeout(removeStartButton, 100);
+                setTimeout(removeStartButton, 200);
+            }
+            
+            // Run very frequently to catch any recreation
+            setInterval(removeStartButton, 100);
+        })();
+    </script>
+    
+    <!-- Smartphone Mode Toggle Script -->
+    <script>
+        // Smartphone mode toggle functionality
+        (function() {
+            // Function to ensure button is visible
+            function ensureButtonVisible() {
+                const smartphoneModeBtn = document.getElementById('smartphoneModeBtn');
+                if (smartphoneModeBtn) {
+                    smartphoneModeBtn.style.display = 'flex';
+                    smartphoneModeBtn.style.visibility = 'visible';
+                    smartphoneModeBtn.style.opacity = '1';
+                    smartphoneModeBtn.style.zIndex = '10001';
+                }
+            }
+            
+            // Ensure button is visible on load
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    ensureButtonVisible();
+                    initSmartphoneMode();
+                });
+            } else {
+                ensureButtonVisible();
+                initSmartphoneMode();
+            }
+            
+            // Keep button visible (check periodically)
+            setInterval(ensureButtonVisible, 1000);
+            
+            function removeStartButtonInSmartphoneMode() {
+                // Aggressively find and remove Start button
+                const selectors = [
+                    'a.btn-start',
+                    'a.btn-custom.btn-start',
+                    'a[href="docs/index.html"]',
+                    'a[href="./docs/index.html"]',
+                    '.button-container a:first-child'
+                ];
+                
+                selectors.forEach(function(selector) {
+                    try {
+                        const elements = document.querySelectorAll(selector);
+                        elements.forEach(function(el) {
+                            if (el && (
+                                (el.href && (el.href.includes('docs/index.html') || el.href.includes('/docs/'))) ||
+                                el.classList.contains('btn-start') ||
+                                el.textContent.trim().toLowerCase().includes('start')
+                            )) {
+                                // Remove from DOM
+                                if (el.parentNode) {
+                                    el.parentNode.removeChild(el);
+                                }
+                                // Also apply inline styles
+                                el.style.setProperty('display', 'none', 'important');
+                                el.style.setProperty('visibility', 'hidden', 'important');
+                            }
+                        });
+                    } catch(e) {}
+                });
+            }
+            
+            function initSmartphoneMode() {
+                const smartphoneModeBtn = document.getElementById('smartphoneModeBtn');
+                const body = document.body;
+                
+                if (!smartphoneModeBtn) {
+                    console.error('Smartphone mode button not found');
+                    return;
+                }
+                
+                // Check for saved preference
+                const savedMode = localStorage.getItem('smartphoneMode');
+                if (savedMode === 'true') {
+                    body.classList.add('smartphone-mode');
+                    smartphoneModeBtn.classList.add('active');
+                    // Remove Start button immediately
+                    setTimeout(removeStartButtonInSmartphoneMode, 10);
+                    setTimeout(removeStartButtonInSmartphoneMode, 50);
+                    setTimeout(removeStartButtonInSmartphoneMode, 100);
+                }
+                
+                // Watch for smartphone mode class changes
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'class') {
+                            if (body.classList.contains('smartphone-mode')) {
+                                removeStartButtonInSmartphoneMode();
+                                setTimeout(removeStartButtonInSmartphoneMode, 50);
+                                setTimeout(removeStartButtonInSmartphoneMode, 100);
+                            }
+                        }
+                    });
+                });
+                
+                observer.observe(body, { attributes: true, attributeFilter: ['class'] });
+                
+                // Toggle smartphone mode
+                smartphoneModeBtn.addEventListener('click', function() {
+                    body.classList.toggle('smartphone-mode');
+                    smartphoneModeBtn.classList.toggle('active');
+                    
+                    // Save preference
+                    const isActive = body.classList.contains('smartphone-mode');
+                    localStorage.setItem('smartphoneMode', isActive);
+                    
+                    // Ensure button stays visible after toggle
+                    ensureButtonVisible();
+                    
+                    // Remove Start button if smartphone mode is active
+                    if (isActive) {
+                        removeStartButtonInSmartphoneMode();
+                        setTimeout(removeStartButtonInSmartphoneMode, 50);
+                        setTimeout(removeStartButtonInSmartphoneMode, 100);
+                        setTimeout(removeStartButtonInSmartphoneMode, 200);
+                    }
+                });
+                
+                // Check very frequently when in smartphone mode
+                setInterval(function() {
+                    if (body.classList.contains('smartphone-mode')) {
+                        removeStartButtonInSmartphoneMode();
+                    }
+                }, 100);
+            }
+        })();
+    </script>
+</body>
+</html>
+
